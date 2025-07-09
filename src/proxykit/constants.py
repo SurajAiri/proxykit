@@ -3,4 +3,4 @@ TEST_SITES = [
     "https://icanhazip.com",
     "https://example.com",
 ]
-THREADS = 25
+THREADS = 50

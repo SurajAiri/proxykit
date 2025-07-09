@@ -86,7 +86,7 @@ class _InternalProxyLoader:
     #         print(f"{p.host}:{p.port}")
 
     @staticmethod
-    def validate_and_save_data(data: list[ProxyServer], threads=45):
+    def validate_and_save_data(data: list[ProxyServer]):
         """
         Validates and saves proxy data using multithreading.
         """
@@ -98,6 +98,9 @@ class _InternalProxyLoader:
             )
 
         valid_proxies = ProxyValidator.validate_list(data)
+
+        store = CacheManager()
+        store.append_proxies(valid_proxies)
 
         # print(len(valid_proxies))
         # for proxy in valid_proxies:

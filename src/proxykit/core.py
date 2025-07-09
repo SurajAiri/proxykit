@@ -30,6 +30,12 @@ class ProxyKit:
         """
         self.__cache_manager.clear_cache()
 
+    def get_proxy_count(self) -> int:
+        """
+        Returns total count of valid proxies
+        """
+        return self.__cache_manager.get_proxies_count()
+
     @staticmethod
     def clear_all_data():
         """

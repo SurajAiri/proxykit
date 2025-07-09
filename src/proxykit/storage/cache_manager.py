@@ -35,6 +35,12 @@ class CacheManager:
         """
         return self.cache.get("proxies", [])
 
+    def get_proxies_count(self) -> int:
+        """
+        Returns total count of valid proxies
+        """
+        return len(self.cache.get("proxies", []))
+
     def get_random_proxy(self) -> ProxyServer | None:
         """
         Get a random proxy from the cache.

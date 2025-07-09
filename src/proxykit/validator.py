@@ -52,7 +52,7 @@ class ProxyValidator:
             res = requests.get(url, proxies=proxies, timeout=15)
 
             # todo: add this in log file
-            # print(proxy_url)
+            print(proxy_url)
             # print(f"Response from {url}:")
             # print(res.status_code)
             # print(res.content)
@@ -67,7 +67,8 @@ class ProxyValidator:
             SSLError,
             ConnectionError,
         ) as e:
-            print(f"Proxy failed: {proxy.host}:{proxy.port} => {e}")
+            # todo: add this to log file
+            # print(f"Proxy failed: {proxy.host}:{proxy.port} => {e}")
             return False
 
     @staticmethod
@@ -101,4 +102,5 @@ class ProxyValidator:
                 result = future.result()
                 if result:
                     valid_proxies.append(result)
+        print("Total valid proxies count: ", len(valid_proxies))
         return valid_proxies

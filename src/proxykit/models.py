@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict, fields
+from dataclasses import asdict, dataclass, fields
 from enum import Enum
 
 

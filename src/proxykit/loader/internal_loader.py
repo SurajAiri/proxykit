@@ -2,9 +2,9 @@ import requests
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import ProxyDataFormat, ProxyServer
+from proxykit.storage import CacheManager
 from proxykit.utils import parse_data
 from proxykit.validator import ProxyValidator
-from proxykit.storage import CacheManager
 
 
 class _InternalProxyLoader:

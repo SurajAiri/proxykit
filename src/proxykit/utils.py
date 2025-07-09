@@ -16,7 +16,6 @@ def parse_data(
 ) -> list[ProxyServer]:
     if isinstance(data, list):
         data = "".join(data)
-    print("data: ", data)
     if format == ProxyDataFormat.IP:
         return IpProxyParser.parse(data)
     if format == ProxyDataFormat.JSON:

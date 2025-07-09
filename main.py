@@ -1,29 +1,25 @@
 # from proxykit.loader import ProxyLoader
 # from proxykit.models import ProxyDataFormat
-from proxykit.models import ProxyServer
-from proxykit.storage import CacheManager
+from proxykit import ProxyLoader, ProxyKit
+from proxykit.models import ProxyDataFormat
 
 
 def main():
     """Main function to execute the script."""
-    # path = "test.json"
+    path = "test.json"
     # path = "https://proxylist.geonode.com/api/proxy-list?protocols=http%2Chttps&limit=500&page=1&sort_by=lastChecked&sort_type=desc#"
     # path = "test.txt"
-    # ProxyLoader.load(
-    #     path,
-    #     format=ProxyDataFormat.IP,
-    #     entry=["data"],
-    #     key_mapping={
-    #         "anonymity": "anonymityLevel",
-    #     },
-    # )
+    ProxyLoader.load(
+        path,
+        format=ProxyDataFormat.JSON,
+        entry=["data"],
+        key_mapping={
+            "anonymity": "anonymityLevel",
+        },
+    )
 
-    c1 = CacheManager()
-    c2 = CacheManager(verbose=True)
-
-    c1.append_proxies([ProxyServer("32.3242.342", 343)])
-    c2.get_proxies()
-    c1.clear_cache()
+    with ProxyKit() as pk:
+        print(pk.get_random_proxy())
 
 
 if __name__ == "__main__":

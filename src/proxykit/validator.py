@@ -9,6 +9,7 @@ from requests.exceptions import (
     ReadTimeout,
     SSLError,
 )
+from tqdm import tqdm
 
 from proxykit.constants import TEST_SITES, THREADS
 from proxykit.models import ProxyServer
@@ -49,24 +50,15 @@ class ProxyValidator:
 
             # Set short timeout to avoid hanging on dead proxies
             res = requests.get(url, proxies=proxies, timeout=15)
-            # print(f"Testing proxy: {proxy.host}:{proxy.port} => {proxy_url}")
-            # with httpx.Client(
-            #     mounts={
-            #         "http://": httpx.HTTPTransport(proxy=proxy_url),
-            #         "https://": httpx.HTTPTransport(proxy=proxy_url),
-            #     },
-            #     timeout=5,
-            # ) as client:
-            #     res = client.get(url)
 
-            print(proxy_url)
-            print(f"Response from {url}:")
-            print(res.status_code)
-            print(res.content)
-            print()
+            # todo: add this in log file
+            # print(proxy_url)
+            # print(f"Response from {url}:")
+            # print(res.status_code)
+            # print(res.content)
+            # print()
 
             return res.status_code < 300
-            # return res.is_success
 
         except (
             ProxyError,
@@ -101,7 +93,11 @@ class ProxyValidator:
                 executor.submit(validate, proxy): proxy for proxy in proxies
             }
 
-            for future in as_completed(future_to_proxy):
+            for future in tqdm(
+                as_completed(future_to_proxy),
+                total=len(proxies),
+                desc="Validating proxies",
+            ):
                 result = future.result()
                 if result:
                     valid_proxies.append(result)

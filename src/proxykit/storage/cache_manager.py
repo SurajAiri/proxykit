@@ -100,6 +100,10 @@ class CacheManager:
         verbose_print(self.verbose, "Proxy deleted successfully", proxy)
         self.save_proxies()
 
+    @staticmethod
+    def clear_all_data():
+        AppDirsManager.remove_cached_data("proxies.json")
+
 
 # # Sample ProxyServer instances for testing
 # def create_sample_proxies() -> list[ProxyServer]:

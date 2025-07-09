@@ -3,7 +3,8 @@ from io import StringIO
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
-from proxykit.utils import extract_keys  # Use same util as JsonParser
+
+from .utils import extract_keys  # Use same util as JsonParser
 
 
 class CsvProxyParser:
@@ -49,8 +50,12 @@ class CsvProxyParser:
                 proxy_servers.append(server)
 
             except KeyError as e:
-                raise InvalidProxyError(f"Missing required field: {e}") from e
+                # raise InvalidProxyError(f"Missing required field: {e}") from e
+                print(f"\033[91mMissing required field: {e} Input data: `{row}`\033[0m")
             except ValueError as ve:
-                raise InvalidProxyError(f"Invalid value in CSV row: {row}") from ve
+                # raise InvalidProxyError(f"Invalid value in CSV row: {row}") from ve
+                print(
+                    f"\033[91mInvalid value in CSV row: {ve} Input data: `{row}`\033[0m"
+                )
 
         return proxy_servers

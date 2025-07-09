@@ -2,7 +2,8 @@ import json
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
-from proxykit.utils import extract_keys
+
+from .utils import extract_keys
 
 
 class JsonProxyParser:
@@ -62,6 +63,7 @@ class JsonProxyParser:
                 )
                 proxy_servers.append(server)
             except KeyError as e:
-                raise InvalidProxyError(f"Invalid proxy entry: {proxy}") from e
+                # raise InvalidProxyError(f"Invalid proxy entry: {proxy}") from e
+                print(f"\033[91mInvalid proxy entry: {e} Input data: `{proxy}`\033[0m")
 
         return proxy_servers

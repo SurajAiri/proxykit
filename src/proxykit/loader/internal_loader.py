@@ -1,9 +1,13 @@
-import httpx
+# import httpx
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from queue import Queue
+
+import requests
 
 from proxykit.exceptions import InvalidProxyError
-from proxykit.loader.proxy_loader import ProxyDataFormat
-from proxykit.models import ProxyServer
+from proxykit.models import ProxyDataFormat, ProxyServer
 from proxykit.utils import parse_data
+from proxykit.validator import ProxyValidator
 
 
 class _InternalProxyLoader:
@@ -21,7 +25,6 @@ class _InternalProxyLoader:
         try:
             with open(path, "r") as f:
                 data = f.readlines()
-
             values = parse_data(
                 data,
                 format,
@@ -40,11 +43,15 @@ class _InternalProxyLoader:
         format: ProxyDataFormat = ProxyDataFormat.IP,
         key_mapping: dict[str, str] = {},
         entry: list[str] = [],
+        token: str | None = None,
     ):
         try:
-            response = httpx.get(url)
+            # todo: yet to implement token handling
+
+            # response = httpx.get(url)
+            response = requests.get(url)
             response.raise_for_status()
-            data = response.text.splitlines()
+            data = response.text
 
             values = parse_data(
                 data,
@@ -55,14 +62,36 @@ class _InternalProxyLoader:
 
             _InternalProxyLoader.validate_and_save_data(values)
 
-        except httpx.HTTPError as e:
+        except Exception as e:
             raise InvalidProxyError(f"Failed to load from URL with {e}") from e
 
+    # @staticmethod
+    # def validate_and_save_data(data: list[ProxyServer], threads=10):
+    #     """
+    #     Assuming data is already in the form of ProxyServer objects,
+    #     data will be validated and then stored in the internal storage.
+    #     """
+    #     if not isinstance(data, list) or not all(
+    #         isinstance(d, ProxyServer) for d in data
+    #     ):
+    #         raise InvalidProxyError(
+    #             "Invalid proxy data format. Expected a list of ProxyServer objects."
+    #         )
+
+    #     # Here you would implement the logic to save the validated data
+    #     # to your internal storage.
+    #     # print("Data validated and ready to be saved:", data)
+
+    #     valids = ProxyValidator.validate_list(data)
+    #     # print("Valid proxies:", valids)
+    #     print(len(valids))
+    #     for p in valids:
+    #         print(f"{p.host}:{p.port}")
+
     @staticmethod
-    def validate_and_save_data(data: list[ProxyServer]):
+    def validate_and_save_data(data: list[ProxyServer], threads=45):
         """
-        Assuming data is already in the form of ProxyServer objects,
-        data will be validated and then stored in the internal storage.
+        Validates and saves proxy data using multithreading.
         """
         if not isinstance(data, list) or not all(
             isinstance(d, ProxyServer) for d in data
@@ -71,6 +100,8 @@ class _InternalProxyLoader:
                 "Invalid proxy data format. Expected a list of ProxyServer objects."
             )
 
-        # Here you would implement the logic to save the validated data
-        # to your internal storage.
-        print("Data validated and ready to be saved:", data)
+        valid_proxies = ProxyValidator.validate_list(data)
+
+        print(len(valid_proxies))
+        for proxy in valid_proxies:
+            print(f"{proxy.host}:{proxy.port}")

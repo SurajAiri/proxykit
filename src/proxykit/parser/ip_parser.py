@@ -34,5 +34,8 @@ class IpProxyParser:
                 server = ProxyServer(host=ip, port=int(port))
                 proxies.append(server)
             except Exception as e:
-                raise InvalidProxyError(f"Invalid proxy format: {e}")
+                # raise InvalidProxyError(f"Invalid proxy format: {e}")
+                print(
+                    f"\033[91mInvalid proxy format: {e} Input data: `{value.strip()}`\033[0m"  # noqa: E501
+                )
         return proxies

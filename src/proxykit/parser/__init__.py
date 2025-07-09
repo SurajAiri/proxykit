@@ -1,9 +1,5 @@
-from .base import BaseProxyParser
+from .csv_parser import CsvProxyParser
 from .ip_parser import IpProxyParser
 from .json_parser import JsonProxyParser
 
-__all__ = [
-    'BaseProxyParser',
-    'JsonProxyParser',
-    'IpProxyParser',
-]
+__all__ = ["JsonProxyParser", "IpProxyParser", "CsvProxyParser"]

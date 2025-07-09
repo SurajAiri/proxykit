@@ -2,42 +2,55 @@ import csv
 from io import StringIO
 
 from proxykit.exceptions import InvalidProxyError
-from src.proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
+from proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
+from proxykit.utils import extract_keys  # Use same util as JsonParser
 
-from .base import BaseProxyParser
 
-
-class CsvProxyParser(BaseProxyParser):
+class CsvProxyParser:
     """
-    Parses proxy data in CSV format.
-    Expected CSV headers: host, port, [ protocol, country, latency, username, password, provider, anonymity, is_working ](optional)
-    Only 'host' and 'port' are required.
-    """  # noqa: E501
+    Parses proxy data in CSV format using key mapping.
+    Only 'ip' and 'port' are required (can be separate or combined as 'ip:port').
+    """
 
-    def parse(self, data: str) -> list:
-        proxy_servers = []
+    @staticmethod
+    def parse(data: str, key_mapping: dict[str, str] = {}) -> list[ProxyServer]:
+        proxy_servers: list[ProxyServer] = []
         reader = csv.DictReader(StringIO(data))
+        keys = extract_keys(key_mapping)
 
         for row in reader:
             try:
+                ip_value = row.get(keys["ip"], "").strip()
+                port_value = row.get(keys["port"], "").strip()
+
+                if ":" in ip_value:
+                    host, port = ip_value.split(":", 1)
+                    port = int(port)
+                elif ip_value and port_value:
+                    host = ip_value
+                    port = int(port_value)
+                else:
+                    raise InvalidProxyError("Missing IP or Port in CSV row")
+
                 server = ProxyServer(
-                    host=row["host"].strip(),
-                    port=int(row["port"]),
-                    protocol=ProxyProtocol(row.get("protocol", "http")),
-                    latency=float(row["latency"]) if row.get("latency") else None,
-                    country=row.get("country"),
-                    username=row.get("username"),
-                    password=row.get("password"),
-                    # provider=row.get('provider', 'local'),
-                    anonymity=AnonymityLevel(row.get("anonymity", "unknown")),
-                    is_working=row.get("is_working", "True").lower() == "true",
+                    host=host,
+                    port=port,
+                    protocol=ProxyProtocol(row.get(keys["protocol"], "http")),
+                    latency=float(row[keys["latency"]])
+                    if row.get(keys["latency"])
+                    else None,
+                    country=row.get(keys["country"]),
+                    username=row.get(keys["username"]),
+                    password=row.get(keys["password"]),
+                    anonymity=AnonymityLevel(row.get(keys["anonymity"], "unknown")),
+                    is_working=row.get(keys["is_working"], "true").strip().lower()
+                    == "true",
                 )
                 proxy_servers.append(server)
+
             except KeyError as e:
                 raise InvalidProxyError(f"Missing required field: {e}") from e
             except ValueError as ve:
-                raise InvalidProxyError(
-                    f"Invalid value in proxy CSV row: {row}"
-                ) from ve
+                raise InvalidProxyError(f"Invalid value in CSV row: {row}") from ve
 
         return proxy_servers

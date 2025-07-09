@@ -1,19 +1,20 @@
 import json
-from collections.abc import Iterable
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
+from proxykit.utils import extract_keys
 
-from .base import BaseProxyParser
 
-
-class JsonProxyParser(BaseProxyParser):
+class JsonProxyParser:
     """
     Parses proxy data in JSON format.
     """
 
     # todo: flexibly handle little change in key names in json data
-    def parse(self, data: str) -> list[ProxyServer]:
+    @staticmethod
+    def parse(
+        data: str, key_mapping: dict[str, str] = {}, entry: list[str] = []
+    ) -> list[ProxyServer]:
         """
         Parse the given JSON data and return a list of ProxyServer objects.
 
@@ -25,32 +26,42 @@ class JsonProxyParser(BaseProxyParser):
 
         """  # noqa: E501
         val: dict = json.loads(data) if isinstance(data, str) else data
-        proxy_servers = []
+        proxy_servers: list[ProxyServer] = []
+
+        for key in entry:
+            if key not in val:
+                raise InvalidProxyError(f"Invalid entry point in JSON: {key}")
+            val = val[key]
+
+        keys = extract_keys(key_mapping)
 
         for proxy in val:
             try:
-                if "ip" in proxy and ":" in proxy["ip"]:
-                    host = proxy["ip"].split(":")[0]
-                    port = int(proxy["ip"].split(":")[1])
+                ip_value = proxy.get(keys["ip"])
+                port_value = proxy.get(keys["port"])
+
+                if ip_value and ":" in ip_value:
+                    host, port = ip_value.split(":", 1)
+                    port = int(port)
+                elif ip_value and port_value:
+                    host = ip_value
+                    port = int(port_value)
                 else:
-                    host = proxy["ip"]
-                    port = int(proxy["port"])
+                    raise InvalidProxyError("Missing IP or Port in proxy data")
 
                 server = ProxyServer(
                     host=host,
                     port=port,
-                    country=proxy.get("country"),
-                    latency=proxy.get("latency"),
-                    username=proxy.get("username"),
-                    password=proxy.get("password"),
-                    # provider=proxy.get('provider', 'local'),
-                    protocol=ProxyProtocol(proxy.get("protocol", "http")),
-                    anonymity=AnonymityLevel(proxy.get("anonymity", "unknown")),
-                    is_working=proxy.get("is_working", True),
+                    country=proxy.get(keys["country"]),
+                    latency=proxy.get(keys["latency"]),
+                    username=proxy.get(keys["username"]),
+                    password=proxy.get(keys["password"]),
+                    protocol=ProxyProtocol(proxy.get(keys["protocol"], "http")),
+                    anonymity=AnonymityLevel(proxy.get(keys["anonymity"], "unknown")),
+                    is_working=proxy.get(keys["is_working"], True),
                 )
                 proxy_servers.append(server)
             except KeyError as e:
-                # raise ValueError(f"Missing required field: {e}")
-                raise InvalidProxyError(f"Missing required field: {e}") from e
+                raise InvalidProxyError(f"Invalid proxy entry: {proxy}") from e
 
         return proxy_servers

@@ -6,12 +6,13 @@ from proxykit.models import ProxyServer
 from .base import BaseProxyParser
 
 
-class IpProxyParser(BaseProxyParser):
+class IpProxyParser:
     """
     Parses proxy data in IP format.
     """
 
-    def parse(self, data: str) -> list[ProxyServer]:
+    @staticmethod
+    def parse(data: str) -> list[ProxyServer]:
         """
         Parse the given IP data and return a list of ProxyServer objects.
 
@@ -21,7 +22,12 @@ class IpProxyParser(BaseProxyParser):
         Returns:
             list: A list of ProxyServer objects.
         """
-        proxies = []
+        if not isinstance(data, str) or not data.strip():
+            raise InvalidProxyError(
+                "Invalid IP data format. Expected a non-empty string."
+            )
+
+        proxies: list[ProxyServer] = []
         for value in data.splitlines():
             try:
                 ip, port = value.strip().split(":")

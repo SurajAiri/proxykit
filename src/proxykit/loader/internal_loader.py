@@ -1,13 +1,10 @@
-# import httpx
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from queue import Queue
-
 import requests
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import ProxyDataFormat, ProxyServer
 from proxykit.utils import parse_data
 from proxykit.validator import ProxyValidator
+from proxykit.storage import CacheManager
 
 
 class _InternalProxyLoader:
@@ -102,6 +99,6 @@ class _InternalProxyLoader:
 
         valid_proxies = ProxyValidator.validate_list(data)
 
-        print(len(valid_proxies))
-        for proxy in valid_proxies:
-            print(f"{proxy.host}:{proxy.port}")
+        # print(len(valid_proxies))
+        # for proxy in valid_proxies:
+        #     print(f"{proxy.host}:{proxy.port}")

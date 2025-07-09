@@ -15,7 +15,7 @@ class AppDirsManager:
         return path
 
     @staticmethod
-    def save_data(data: dict, filename: str):
+    def save_data(data: list | dict, filename: str):
         cache_data = {"updated_at": time.time(), "data": data}
         with open(AppDirsManager.get_cache_path(filename), "w") as f:
             json.dump(cache_data, f)

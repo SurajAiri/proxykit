@@ -34,3 +34,8 @@ def format_proxy_protocol(protocol: ProxyProtocol):
     if protocol == ProxyProtocol.SOCKS4:
         return "socks4"
     return "socks5"
+
+
+def verbose_print(verbose: bool, *args, **kargs):
+    if verbose:
+        print(*args, **kargs)

@@ -24,6 +24,6 @@ class ProxyServer:
     username:str | None = None
     password:str | None = None
     protocol: ProxyProtocol = ProxyProtocol.HTTP
-    provider:str = "local"
+    # provider:str = "local"
     anonymity: AnonymityLevel = AnonymityLevel.UNKNOWN
     is_working:bool = True

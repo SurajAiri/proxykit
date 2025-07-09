@@ -11,20 +11,20 @@ class IpProxyParser(BaseProxyParser):
     Parses proxy data in IP format.
     """
 
-    def parse(self, data: Iterable) -> list[ProxyServer]:
+    def parse(self, data: str) -> list[ProxyServer]:
         """
         Parse the given IP data and return a list of ProxyServer objects.
 
         Args:
-            data (Iterable): The raw proxy data in IP format.
+            data (str): The raw proxy data in IP format.
 
         Returns:
             list: A list of ProxyServer objects.
         """
         proxies = []
-        for value in data:
+        for value in data.splitlines():
             try:
-                ip, port = value.strip().split(':')
+                ip, port = value.strip().split(":")
                 server = ProxyServer(host=ip, port=int(port))
                 proxies.append(server)
             except Exception as e:

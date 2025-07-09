@@ -13,12 +13,12 @@ class BaseProxyParser:
     Subclasses should implement the `parse` method.
     """
 
-    def parse(self, data: Iterable) -> list[ProxyServer]:
+    def parse(self, data: str) -> list[ProxyServer]:
         """
         Parse the given data and return a list of ProxyServer objects.
         
         Args:
-            data (Iterable): The raw proxy data in a specific format (e.g., JSON, CSV).
+            data (str): The raw proxy data in a specific format (e.g., JSON, CSV, etc.).
         Returns:
             list: A list of ProxyServer objects.
         """

@@ -6,7 +6,7 @@ ProxyKit is a lightweight Python package for managing and rotating proxy servers
 ## Getting Started
 
 ### Prerequisites
-- List your requirements here
+- python >= 9 (should work on less version but not tested yet)
 
 ### Installation
 ```bash
@@ -19,16 +19,6 @@ ProxyKit is a lightweight Python package for managing and rotating proxy servers
 ```bash
 # Add usage examples
 ```
-
-## Project Structure
-```
-├── src/
-├── tests/
-├── docs/
-└── README.md
-```
-
-For detailed architecture information, see [docs/architecture.md](docs/architecture.md).
 
 ## Contributing
 1. Fork the repository

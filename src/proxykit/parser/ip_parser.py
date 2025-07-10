@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from typing import List
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import ProxyServer
@@ -12,7 +13,7 @@ class IpProxyParser:
     """
 
     @staticmethod
-    def parse(data: str) -> list[ProxyServer]:
+    def parse(data: str) -> List[ProxyServer]:
         """
         Parse the given IP data and return a list of ProxyServer objects.
 
@@ -27,7 +28,7 @@ class IpProxyParser:
                 "Invalid IP data format. Expected a non-empty string."
             )
 
-        proxies: list[ProxyServer] = []
+        proxies: List[ProxyServer] = []
         for value in data.splitlines():
             try:
                 ip, port = value.strip().split(":")

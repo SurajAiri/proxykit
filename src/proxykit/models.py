@@ -1,5 +1,6 @@
 from dataclasses import asdict, dataclass, fields
 from enum import Enum
+from typing import Optional
 
 
 class ProxyProtocol(Enum):
@@ -27,10 +28,10 @@ class ProxyDataFormat(Enum):
 class ProxyServer:
     host: str
     port: int
-    country: str | None = None
-    latency: float | None = None
-    username: str | None = None
-    password: str | None = None
+    country: Optional[str] = None
+    latency: Optional[float] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
     protocol: ProxyProtocol = ProxyProtocol.HTTP
     # provider:str = "local"
     anonymity: AnonymityLevel = AnonymityLevel.UNKNOWN

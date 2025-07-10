@@ -12,8 +12,6 @@ A lightweight Python package for managing and rotating proxy servers with built-
 
 ## Installation
 
-(not published yet)
-
 ```bash
 pip install proxykit
 ```
@@ -151,7 +149,7 @@ THREADS = 25  # Validation concurrency
 
 ## Requirements
 
-- Python ≥ 3.9
+- Python ≥ 3.8
 - Dependencies: [`appdirs`](https://pypi.org/project/appdirs/), [`requests`](https://pypi.org/project/requests/), [`tqdm`](https://pypi.org/project/tqdm/)
 
 ## License

@@ -1,3 +1,4 @@
+from typing import Optional
 from proxykit.models import ProxyServer
 from proxykit.storage.cache_manager import CacheManager
 from proxykit.utils import verbose_print
@@ -18,7 +19,7 @@ class ProxyKit:
         if self.verbose:
             print("ProxyKit closed")
 
-    def get_random_proxy(self) -> ProxyServer | None:
+    def get_random_proxy(self) -> Optional[ProxyServer]:
         """
         Randomly selects one valid working proxy
         """

@@ -1,4 +1,5 @@
 import json
+from typing import Dict, List
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
@@ -14,8 +15,8 @@ class JsonProxyParser:
     # todo: flexibly handle little change in key names in json data
     @staticmethod
     def parse(
-        data: str, key_mapping: dict[str, str] = {}, entry: list[str] = []
-    ) -> list[ProxyServer]:
+        data: str, key_mapping: Dict[str, str] = {}, entry: List[str] = []
+    ) -> List[ProxyServer]:
         """
         Parse the given JSON data and return a list of ProxyServer objects.
 
@@ -27,7 +28,7 @@ class JsonProxyParser:
 
         """  # noqa: E501
         val: dict = json.loads(data) if isinstance(data, str) else data
-        proxy_servers: list[ProxyServer] = []
+        proxy_servers: List[ProxyServer] = []
 
         for key in entry:
             if key not in val:

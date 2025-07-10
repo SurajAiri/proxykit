@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Dict, List, Optional
 
 from proxykit.models import ProxyDataFormat, ProxyServer
 
@@ -15,9 +16,9 @@ class ProxyLoader:
     def load(
         source: str,
         format: ProxyDataFormat = ProxyDataFormat.JSON,
-        key_mapping: dict[str, str] = {},
-        entry: list[str] = [],
-        token: str | None = None,
+        key_mapping: Dict[str, str] = {},
+        entry: List[str] = [],
+        token: Optional[str] = None,
     ):
         """
         Load proxy data from the specified source in the given format.
@@ -27,13 +28,13 @@ class ProxyLoader:
              URLs must start with http or https.
             format (ProxyDataFormat): The format of the proxy data.
                 <br>**Try to avoid csv format, or be more cautious about your data and key_mapping**
-            key_mapping (dict[str, str]): Optional mapping of keys for parsing.
+            key_mapping (Dict[str,str]): Optional mapping of keys for parsing.
                 Available keys to map: "ip", "port", "protocol", "anonymity",
                 "username", "password", "country", "latency", "is_working".
                 <br>`Keys (we expecting): values (your data should have these keys)`<br>
                 Example: {"ip": "your-host", "port": "your-port"}
                 <br>Ignore matching keys
-            entry (list[str]): [Only for JSON] Optional entry point for nested data structures.
+            entry (List[str]): [Only for JSON] Optional entry point for nested data structures.
                 entry should be a list of keys to navigate through the JSON structure.
                 <br> json: {'a': {'b': {'c': 'value'}}} -> entry=['a', 'b', 'c'] to get 'value'.
             token (str | None): Optional token for authentication or access control. [only for remote sources]
@@ -59,7 +60,7 @@ class ProxyLoader:
             )
 
     @staticmethod
-    def custom_load(data: list[ProxyServer]):
+    def custom_load(data: List[ProxyServer]):
         """
         Assuming data is already in the form of ProxyServer objects,
         data will be validated and then stored in the internal storage.

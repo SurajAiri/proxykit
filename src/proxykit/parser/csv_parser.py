@@ -1,5 +1,6 @@
 import csv
 from io import StringIO
+from typing import Dict, List
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import AnonymityLevel, ProxyProtocol, ProxyServer
@@ -14,8 +15,8 @@ class CsvProxyParser:
     """
 
     @staticmethod
-    def parse(data: str, key_mapping: dict[str, str] = {}) -> list[ProxyServer]:
-        proxy_servers: list[ProxyServer] = []
+    def parse(data: str, key_mapping: Dict[str, str] = {}) -> List[ProxyServer]:
+        proxy_servers: List[ProxyServer] = []
         reader = csv.DictReader(StringIO(data))
         keys = extract_keys(key_mapping)
 

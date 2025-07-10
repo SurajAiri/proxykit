@@ -1,5 +1,6 @@
 import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List, Optional
 
 import requests
 from requests.exceptions import (
@@ -72,19 +73,19 @@ class ProxyValidator:
             return False
 
     @staticmethod
-    def validate_list(proxies: list[ProxyServer]) -> list[ProxyServer]:
+    def validate_list(proxies: List[ProxyServer]) -> List[ProxyServer]:
         """
         Validate a list of proxy server objects.
 
         Args:
-            proxies (list[ProxyServer]): The list of proxy server objects to validate.
+            proxies (List[ProxyServer]): The list of proxy server objects to validate.
 
         Returns:
-            list[ProxyServer]: A list of valid proxy server objects.
+            List[ProxyServer]: A list of valid proxy server objects.
         """
 
         # return [proxy for proxy in proxies if ProxyValidator.validate(proxy)]
-        def validate(proxy: ProxyServer) -> ProxyServer | None:
+        def validate(proxy: ProxyServer) -> Optional[ProxyServer]:
             return proxy if ProxyValidator.validate(proxy) else None
 
         valid_proxies = []

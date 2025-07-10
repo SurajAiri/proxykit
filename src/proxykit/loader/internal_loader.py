@@ -1,3 +1,5 @@
+from typing import Dict, List, Optional
+
 import requests
 
 from proxykit.exceptions import InvalidProxyError
@@ -16,8 +18,8 @@ class _InternalProxyLoader:
     def load_local(
         path: str,
         format: ProxyDataFormat = ProxyDataFormat.IP,
-        key_mapping: dict[str, str] = {},
-        entry: list[str] = [],
+        key_mapping: Dict[str, str] = {},
+        entry: List[str] = [],
     ):
         try:
             with open(path, "r") as f:
@@ -38,9 +40,9 @@ class _InternalProxyLoader:
     def load_remote(
         url: str,
         format: ProxyDataFormat = ProxyDataFormat.IP,
-        key_mapping: dict[str, str] = {},
-        entry: list[str] = [],
-        token: str | None = None,
+        key_mapping: Dict[str, str] = {},
+        entry: List[str] = [],
+        token: Optional[str] = None,
     ):
         try:
             # todo: yet to implement token handling
@@ -63,7 +65,7 @@ class _InternalProxyLoader:
             raise InvalidProxyError(f"Failed to load from URL with {e}") from e
 
     # @staticmethod
-    # def validate_and_save_data(data: list[ProxyServer], threads=10):
+    # def validate_and_save_data(data: List[ProxyServer], threads=10):
     #     """
     #     Assuming data is already in the form of ProxyServer objects,
     #     data will be validated and then stored in the internal storage.
@@ -86,7 +88,7 @@ class _InternalProxyLoader:
     #         print(f"{p.host}:{p.port}")
 
     @staticmethod
-    def validate_and_save_data(data: list[ProxyServer]):
+    def validate_and_save_data(data: List[ProxyServer]):
         """
         Validates and saves proxy data using multithreading.
         """

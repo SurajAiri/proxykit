@@ -1,4 +1,5 @@
 import random
+from typing import List, Optional
 
 from proxykit.models import ProxyServer
 from proxykit.utils import verbose_print
@@ -27,7 +28,7 @@ class CacheManager:
     #     self.cache = {}
     #     self.is_initiated = False
 
-    def get_proxies(self) -> list[ProxyServer]:
+    def get_proxies(self) -> List[ProxyServer]:
         """
         Get the cached proxies.
         Returns:
@@ -41,7 +42,7 @@ class CacheManager:
         """
         return len(self.cache.get("proxies", []))
 
-    def get_random_proxy(self) -> ProxyServer | None:
+    def get_random_proxy(self) -> Optional[ProxyServer]:
         """
         Get a random proxy from the cache.
         Returns:
@@ -51,11 +52,11 @@ class CacheManager:
             return None
         return random.choice(self.cache["proxies"])
 
-    def append_proxies(self, proxies: list[ProxyServer]):
+    def append_proxies(self, proxies: List[ProxyServer]):
         """
         Append proxies to the cache.
         Args:
-            proxies (list[ProxyServer]): The list of proxies to append.
+            proxies (List[ProxyServer]): The list of proxies to append.
         """
         # don't append duplicates
         existing = self.cache.get("proxies", {})
@@ -112,11 +113,11 @@ class CacheManager:
 
 
 # # Sample ProxyServer instances for testing
-# def create_sample_proxies() -> list[ProxyServer]:
+# def create_sample_proxies() -> List[ProxyServer]:
 #     """
 #     Create sample ProxyServer instances for testing purposes.
 #     Returns:
-#         list[ProxyServer]: A list of sample proxy servers.
+#         List[ProxyServer]: A list of sample proxy servers.
 #     """
 #     return [
 #         ProxyServer(host="192.168.1.100", port=8080),

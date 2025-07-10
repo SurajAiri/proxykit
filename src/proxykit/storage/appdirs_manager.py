@@ -1,6 +1,7 @@
 import json
 import os
 import time
+from typing import Union
 
 from appdirs import user_cache_dir
 
@@ -15,7 +16,7 @@ class AppDirsManager:
         return path
 
     @staticmethod
-    def save_data(data: list | dict, filename: str):
+    def save_data(data: Union[list, dict], filename: str):
         cache_data = {"updated_at": time.time(), "data": data}
         with open(AppDirsManager.get_cache_path(filename), "w") as f:
             json.dump(cache_data, f)

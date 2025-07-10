@@ -1,5 +1,6 @@
 # utils/key_mapping.py
 
+from typing import Dict, List, Union
 
 from proxykit.exceptions import InvalidProxyError
 from proxykit.models import ProxyDataFormat, ProxyProtocol, ProxyServer
@@ -9,11 +10,11 @@ from proxykit.parser.json_parser import JsonProxyParser
 
 
 def parse_data(
-    data: list[str] | str,
+    data: Union[List[str], str],
     format: ProxyDataFormat,
-    key_mapping: dict[str, str] = {},
-    entry: list[str] = [],
-) -> list[ProxyServer]:
+    key_mapping: Dict[str, str] = {},
+    entry: List[str] = [],
+) -> List[ProxyServer]:
     if isinstance(data, list):
         data = "".join(data)
     if format == ProxyDataFormat.IP:

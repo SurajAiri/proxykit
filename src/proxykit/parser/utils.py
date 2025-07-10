@@ -1,4 +1,7 @@
-def extract_keys(key_mapping: dict[str, str] = {}) -> dict[str, str]:
+from typing import Dict
+
+
+def extract_keys(key_mapping: Dict[str, str] = {}) -> Dict[str, str]:
     """
     Normalize key mapping with default fallbacks.
     """

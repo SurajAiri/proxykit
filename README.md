@@ -1,6 +1,7 @@
 # ProxyKit
 
 A lightweight Python package for managing and rotating proxy servers with built-in validation and caching.
+**Free Proxies are not stable, may die anytime but you can also use your paid private servers to rotate.** _We don't sell any_
 
 ## Features
 
@@ -155,6 +156,13 @@ THREADS = 25  # Validation concurrency
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## TO-DO
+
+- [x] Make compatible with python >=3.8
+- [ ] Auto-fetch proxy sites
+  - [ ] api.proxyscarpe.com
+  - [ ] TheSpeedX/PROXY-List (github)
 
 ## Contributing
 

@@ -66,7 +66,7 @@ class ProxyValidator:
             ReadTimeout,
             SSLError,
             ConnectionError,
-        ) as e:
+        ):
             # todo: add this to log file
             # print(f"Proxy failed: {proxy.host}:{proxy.port} => {e}")
             return False
